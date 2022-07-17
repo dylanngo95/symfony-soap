@@ -10,9 +10,25 @@
              targetNamespace="urn:helloservicewsdl">
 
     <types>
-        <xsd:schema targetNamespace="urn:hellowsdl">
+        <xsd:schema targetNamespace="urn:hellowsdl"
+                    xmlns="http://www.w3.org/2001/XMLSchema"
+                    xmlns:soap11-enc="http://schemas.xmlsoap.org/soap/encoding/"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:tns="urn:hellowsdl">
+
             <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
             <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+            <complexType name="User">
+                <sequence>
+                    <element name="email" type="xsd:string"/>
+                    <element name="password" type="xsd:string"/>
+                </sequence>
+            </complexType>
+            <complexType name="Users">
+                <sequence>
+                    <element name="User" type="tns:User" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </complexType>
         </xsd:schema>
     </types>
 
@@ -56,10 +72,9 @@
     <!--User Service-->
     <message name="userRequest">
         <part name="email" type="xsd:string"/>
-        <part name="password" type="xsd:string"/>
     </message>
     <message name="userResponse">
-        <part name="return" type="xsd:string"/>
+        <part name="Users" type="tns:Users"/>
     </message>
     <portType name="userPortType">
         <operation name="user">
